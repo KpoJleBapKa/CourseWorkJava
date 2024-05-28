@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clan Statistics</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Clan Statistics</h1>
+<div class="login">
+    <a href="/oauth2/authorization/google">Login with Google</a>
+</div>
+<form id="searchForm">
+    <input type="text" id="searchInput" placeholder="Search for clans...">
+    <button type="submit">Search</button>
+</form>
+<table id="clanStatsTable">
+    <thead>
+    <tr>
+        <th>Clan Name</th>
+        <th>Average Battles</th>
+        <th>Average Damage</th>
+        <th>Average Experience</th>
+        <th>Win Rate</th>
+        <th>Clan Rating</th>
+        <th>Total Members</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Clan data will be dynamically loaded here -->
+    </tbody>
+</table>
+<script src="scripts.js"></script>
+</body>
+</html>

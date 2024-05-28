@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Statistics</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Player Statistics</h1>
+<div class="login">
+    <a href="/oauth2/authorization/google">Login with Google</a>
+</div>
+<form id="playerSearchForm">
+    <input type="text" id="playerSearchInput" placeholder="Search for players...">
+    <button type="submit">Search</button>
+</form>
+<table id="playerStatsTable">
+    <thead>
+    <tr>
+        <th>Nickname</th>
+        <th>Total Battles</th>
+        <th>Win Rate</th>
+        <th>Average Damage</th>
+        <th>Average Experience</th>
+        <th>Clan</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Player data will be dynamically loaded here -->
+    </tbody>
+</table>
+<script src="scripts.js"></script>
+</body>
+</html>
