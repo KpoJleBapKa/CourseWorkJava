@@ -14,8 +14,7 @@ public class Player {
     private float winRate;
     private float averageDamage;
     private float averageExp;
-    private String clanName; // Додано нове поле
-
+    private String clanName;
     @ManyToOne
     @JoinColumn(name = "clan_id")
     private Clan clan;

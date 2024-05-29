@@ -32,5 +32,6 @@ services:
     stdin_open: true  # апрув на вхідні дані
     tty: true  # псевдотермінал
     command: /bin/bash -c "java -jar app.jar"
+
 volumes:
   db_data:

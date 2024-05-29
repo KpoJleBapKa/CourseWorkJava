@@ -31,7 +31,7 @@ public class MainMenu {
             System.out.println("3. Exit");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -58,7 +58,7 @@ public class MainMenu {
             System.out.println("6. Back to Main Menu");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -94,7 +94,7 @@ public class MainMenu {
             System.out.println("6. Back to Main Menu");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -150,7 +150,7 @@ public class MainMenu {
         float exp = scanner.nextFloat();
         System.out.print("Enter Average Damage: ");
         float damage = scanner.nextFloat();
-        scanner.nextLine();  // Consume newline
+        scanner.nextLine();
 
         Clan clan = new Clan();
         clan.setClanName(name);
@@ -182,7 +182,7 @@ public class MainMenu {
             clan.setAverageExp(scanner.nextFloat());
             System.out.print("Enter Average Damage: ");
             clan.setAverageDamage(scanner.nextFloat());
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();
 
             clanService.saveClan(clan);
             System.out.println("Clan updated successfully.");
@@ -229,7 +229,7 @@ public class MainMenu {
         float damage = scanner.nextFloat();
         System.out.print("Enter Average Exp: ");
         float exp = scanner.nextFloat();
-        scanner.nextLine();  // Consume newline
+        scanner.nextLine();
         System.out.print("Enter Clan Name: ");
         String clanName = scanner.nextLine();
 
@@ -258,7 +258,7 @@ public class MainMenu {
             player.setAverageDamage(scanner.nextFloat());
             System.out.print("Enter Average Exp: ");
             player.setAverageExp(scanner.nextFloat());
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();
             System.out.print("Enter Clan Name: ");
             String clanName = scanner.nextLine();
 
