@@ -45,6 +45,7 @@ public class ClanController {
     @Autowired
     private ClanRepository clanRepository;
 
+    // метод для отримання списку кланів
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping
     public List<Clan> getClans(@RequestParam(required = false) String search) {
@@ -55,12 +56,14 @@ public class ClanController {
         }
     }
 
+    // метод для створення нового клану
     @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping
     public Clan createClan(@RequestBody Clan clan) {
         return clanRepository.save(clan);
     }
 
+    // метод для повного оновлення інформації про клан
     @CrossOrigin(origins = "http://localhost:8080")
     @PutMapping("/{id}")
     public Clan updateClan(@PathVariable Long id, @RequestBody Clan clanDetails) {
@@ -80,6 +83,7 @@ public class ClanController {
         }
     }
 
+    // метод для часткового оновлення інформації про клан
     @CrossOrigin(origins = "http://localhost:8080")
     @PatchMapping("/{id}")
     public Clan partiallyUpdateClan(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
@@ -117,6 +121,7 @@ public class ClanController {
         }
     }
 
+    // метод для видалення клану
     @CrossOrigin(origins = "http://localhost:8080")
     @DeleteMapping("/{id}")
     public void deleteClan(@PathVariable Long id) {

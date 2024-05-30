@@ -45,6 +45,7 @@ public class PlayerController {
     @Autowired
     private PlayerRepository playerRepository;
 
+    // метод для отримання списку гравців
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping
     public List<Player> getPlayers(@RequestParam(required = false) String search) {
@@ -55,12 +56,14 @@ public class PlayerController {
         }
     }
 
+    // метод для створення нового гравця
     @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping
     public Player createPlayer(@RequestBody Player player) {
         return playerRepository.save(player);
     }
 
+    // метод для повного оновлення інформації про гравця
     @CrossOrigin(origins = "http://localhost:8080")
     @PutMapping("/{id}")
     public Player updatePlayer(@PathVariable Long id, @RequestBody Player playerDetails) {
@@ -79,6 +82,7 @@ public class PlayerController {
         }
     }
 
+    // метод для часткового оновлення інформації про гравця
     @CrossOrigin(origins = "http://localhost:8080")
     @PatchMapping("/{id}")
     public Player partiallyUpdatePlayer(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
@@ -113,6 +117,7 @@ public class PlayerController {
         }
     }
 
+    // метод для видалення гравця
     @CrossOrigin(origins = "http://localhost:8080")
     @DeleteMapping("/{id}")
     public void deletePlayer(@PathVariable Long id) {

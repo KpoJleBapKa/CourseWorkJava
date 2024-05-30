@@ -57,7 +57,7 @@ public class SecurityConfig {
     }
 
 
-    @Bean // обробник успішної аутентифікації, який перенаправляє користувача на /clanStatisticsView.html
+    @Bean // обробник успішної аутентифікації, який перенаправляє на стату за клан
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
         delegate.setDefaultTargetUrl("/clanStatisticsView.html");
@@ -90,8 +90,11 @@ public class SecurityConfig {
 
                         // якщо email не відповідає моєму, то відмовити у доступі
                         if (!"toadkillergamer@gmail.com".equals(email)) {
-                            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
-                            return;
+                            // дозволити лише GET запити
+                            if (!"GET".equalsIgnoreCase(httpRequest.getMethod())) {
+                                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+                                return;
+                            }
                         }
                     }
                 }

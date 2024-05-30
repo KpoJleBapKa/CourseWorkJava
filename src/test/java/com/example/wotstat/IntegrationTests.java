@@ -1,125 +1,124 @@
-//package com.example.wotstat;
-//
-//import com.example.wotstat.model.Clan;
-//import com.example.wotstat.model.Player;
-//import com.example.wotstat.repository.ClanRepository;
-//import com.example.wotstat.repository.PlayerRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.web.servlet.MockMvc;
-//
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-//
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//public class IntegrationTests {
-//
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private PlayerRepository playerRepository;
-//
-//    @Autowired
-//    private ClanRepository clanRepository;
-//
-//    @BeforeEach
-//    void setUp() {
-//        playerRepository.deleteAll();
-//        clanRepository.deleteAll();
-//    }
-//
-//    @Test
-//    public void testGetPlayerStatistics_Success() throws Exception {
-//        Clan clan = new Clan();
-//        clan.setClanName("Test Clan");
-//        clan.setTotalMembers(10);
-//        clan.setAverageBattles(200);
-//        clan.setWinRate(60.0f);
-//        clan.setClanRating(1500.0f);
-//        clan.setAverageExp(500.0f);
-//        clan.setAverageDamage(2000.0f);
-//        clanRepository.save(clan);
-//
-//        Player player = new Player();
-//        player.setNickname("existingPlayer");
-//        player.setTotalBattles(100);
-//        player.setWinRate(60.0f);
-//        player.setAverageDamage(1500.0f);
-//        player.setAverageExp(500.0f);
-//        playerRepository.save(player);
-//
-//        mockMvc.perform(get("/api/players/statistics")
-//                        .param("nickname", "existingPlayer"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.nickname").value("existingPlayer"))
-//                .andExpect(jsonPath("$.clanName").value("Test Clan"))
-//                .andExpect(jsonPath("$.totalBattles").value(100))
-//                .andExpect(jsonPath("$.winRate").value(60.0))
-//                .andExpect(jsonPath("$.averageDamage").value(1500.0))
-//                .andExpect(jsonPath("$.averageExp").value(500.0));
-//    }
-//
-//    @Test
-//    public void testGetPlayerStatistics_PlayerNotFound() throws Exception {
-//        mockMvc.perform(get("/api/players/statistics")
-//                        .param("nickname", "nonExistingPlayer"))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.message").value("Гравця не знайдено"));
-//    }
-//
-//    @Test
-//    public void testGetClanStatistics_Success() throws Exception {
-//        Clan clan = new Clan();
-//        clan.setClanName("existingClan");
-//        clan.setTotalMembers(50);
-//        clan.setAverageBattles(200);
-//        clan.setWinRate(60.0f);
-//        clan.setClanRating(1500.0f);
-//        clan.setAverageExp(500.0f);
-//        clan.setAverageDamage(2000.0f);
-//        clanRepository.save(clan);
-//
-//        mockMvc.perform(get("/api/clans/statistics")
-//                        .param("clanName", "existingClan"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.clanName").value("existingClan"))
-//                .andExpect(jsonPath("$.totalMembers").value(50))
-//                .andExpect(jsonPath("$.averageBattles").value(200))
-//                .andExpect(jsonPath("$.winRate").value(60.0))
-//                .andExpect(jsonPath("$.clanRating").value(1500.0))
-//                .andExpect(jsonPath("$.averageExp").value(500.0))
-//                .andExpect(jsonPath("$.averageDamage").value(2000.0));
-//    }
-//
-//    @Test
-//    public void testGetClanStatistics_ClanNotFound() throws Exception {
-//        mockMvc.perform(get("/api/clans/statistics")
-//                        .param("clanName", "nonExistingClan"))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.message").value("Клан не знайдено"));
-//    }
-//
-//    @Test
-//    public void testCalculateBattles_Success() throws Exception {
-//        mockMvc.perform(get("/api/battles/calculate")
-//                        .param("menuOption", "1"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.menuOption").value("1"))
-//                .andExpect(jsonPath("$.totalBattles").value(100))
-//                .andExpect(jsonPath("$.wins").value(60))
-//                .andExpect(jsonPath("$.losses").value(40));
-//    }
-//
-//    @Test
-//    public void testCalculateBattles_InvalidMenuOption() throws Exception {
-//        mockMvc.perform(get("/api/battles/calculate")
-//                        .param("menuOption", "invalidOption"))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.message").value("Невірний пункт меню"));
-//    }
-//}
+package com.example.wotstat;
+
+import com.example.wotstat.controller.ClanController;
+import com.example.wotstat.controller.PlayerController;
+import com.example.wotstat.model.Clan;
+import com.example.wotstat.model.Player;
+import com.example.wotstat.repository.ClanRepository;
+import com.example.wotstat.repository.PlayerRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class IntegrationTests {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private ClanRepository clanRepository;
+
+    @MockBean
+    private PlayerRepository playerRepository;
+
+    private Clan testClan;
+    private Player testPlayer;
+
+    @BeforeEach
+    public void setup() {
+        testClan = new Clan();
+        testClan.setClanName("TestClan");
+        testClan.setTotalMembers(10);
+        testClan.setAverageBattles(20);
+        testClan.setWinRate(50.0f);
+        testClan.setClanRating(100.0f);
+        testClan.setAverageExp(200.0f);
+        testClan.setAverageDamage(300.0f);
+
+        testPlayer = new Player();
+        testPlayer.setNickname("TestPlayer");
+        testPlayer.setClanName("TEST");
+        testPlayer.setTotalBattles(100);
+        testPlayer.setWinRate(60);
+        testPlayer.setAverageExp(5000);
+        testPlayer.setAverageDamage(7000);
+
+        Mockito.when(clanRepository.findByClanNameContainingIgnoreCase("TestClan")).thenReturn(List.of(testClan));
+        Mockito.when(clanRepository.findByClanNameContainingIgnoreCase("NonExistentClan")).thenReturn(Collections.emptyList());
+
+        Mockito.when(playerRepository.findByNicknameContainingIgnoreCase("TestPlayer")).thenReturn(List.of(testPlayer));
+        Mockito.when(playerRepository.findByNicknameContainingIgnoreCase("NonExistentPlayer")).thenReturn(Collections.emptyList());
+    }
+
+    // User Story 1
+    @Test
+    @WithMockUser(username = "toadkillergamer@gmail.com", roles = "USER")
+    public void testPlayerStatisticsFound() throws Exception {
+        mockMvc.perform(get("/api/players/search")
+                        .param("nickname", "TestPlayer")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nickname").value("TestPlayer"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.totalBattles").value(100))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.winRate").value(60))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.averageExp").value(5000))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.averageDamage").value(7000));
+    }
+
+    @Test
+    @WithMockUser(username = "toadkillergamer@gmail.com", roles = "USER")
+    public void testPlayerStatisticsNotFound() throws Exception {
+        mockMvc.perform(get("/api/players/search")
+                        .param("nickname", "NonExistentPlayer")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No players found."));
+    }
+
+    // User Story 2
+    @Test
+    @WithMockUser(username = "toadkillergamer@gmail.com", roles = "USER")
+    public void testClanStatisticsFound() throws Exception {
+        mockMvc.perform(get("/api/clans/search")
+                        .param("clanName", "TestClan")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.clanName").value("TestClan"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.totalMembers").value(10))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.averageBattles").value(20))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.winRate").value(50.0f))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.clanRating").value(100.0f))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.averageExp").value(200.0f))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.averageDamage").value(300.0f));
+    }
+
+    @Test
+    @WithMockUser(username = "toadkillergamer@gmail.com", roles = "USER")
+    public void testClanStatisticsNotFound() throws Exception {
+        mockMvc.perform(get("/api/clans/search")
+                        .param("clanName", "NonExistentClan")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No clans found."));
+    }
+}
