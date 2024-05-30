@@ -1,0 +1,6 @@
+CorsConfig - фільтр
+SecurityConfig - 
+Controller - для видачі інформації
+Model - ентіті в БД 
+Repository - для зв'язку з БД
+Service - Для бізнес-логіки

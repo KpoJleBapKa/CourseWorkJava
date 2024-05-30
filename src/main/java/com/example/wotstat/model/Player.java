@@ -15,9 +15,9 @@ public class Player {
     private float averageDamage;
     private float averageExp;
     private String clanName;
-    @ManyToOne
-    @JoinColumn(name = "clan_id")
-    private Clan clan;
+//    @ManyToOne
+//    @JoinColumn(name = "clan_id")
+//    private Clan clan;
 
     public Long getId() {
         return id;
@@ -75,11 +75,11 @@ public class Player {
         this.clanName = clanName;
     }
 
-    public Clan getClan() {
-        return clan;
-    }
-
-    public void setClan(Clan clan) {
-        this.clan = clan;
-    }
+//    public Clan getClan() {
+//        return clan;
+//    }
+//
+//    public void setClan(Clan clan) {
+//        this.clan = clan;
+//    }
 }

@@ -18,8 +18,8 @@ public class Clan {
     private float averageExp;
     private float averageDamage;
 
-    @OneToMany(mappedBy = "clan")
-    private List<Player> players;
+//    @OneToMany(mappedBy = "clan")
+//    private List<Player> players;
 
     public Long getId() {
         return id;
@@ -85,11 +85,11 @@ public class Clan {
         this.averageDamage = averageDamage;
     }
 
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
+//    public List<Player> getPlayers() {
+//        return players;
+//    }
+//
+//    public void setPlayers(List<Player> players) {
+//        this.players = players;
+//    }
 }

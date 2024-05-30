@@ -14,9 +14,9 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:8080");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.addAllowedOrigin("http://localhost:8080"); // надає доступ цьому фронтенду до ресурсів сервера
+        config.addAllowedHeader("*"); // дозвіл на всі хедери
+        config.addAllowedMethod("*"); // дозвіл на всі методи GET PUT POST OPTIONS DELETE
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

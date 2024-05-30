@@ -51,7 +51,6 @@
 //        player.setWinRate(60.0f);
 //        player.setAverageDamage(1500.0f);
 //        player.setAverageExp(500.0f);
-//        player.setClan(clan);
 //        playerRepository.save(player);
 //
 //        mockMvc.perform(get("/api/players/statistics")
