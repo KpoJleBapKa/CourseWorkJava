@@ -1,11 +1,19 @@
 package com.example.wotstat.config;
 
+import com.example.wotstat.model.Role;
+import com.example.wotstat.model.User;
+import com.example.wotstat.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,13 +35,18 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+    @Autowired
+    private UserService userService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/**").authenticated() // Користувачі повинні бути аутентифіковані для доступу до /api/**
+                                .requestMatchers(HttpMethod.GET, "/api/**").authenticated() // Користувачі повинні бути аутентифіковані для доступу до /api/**
+                                .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PATCH, "/api/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
                                 .anyRequest().permitAll() // Дозвіл на доступ до всіх інших запитів без аутентифікації
                 )
                 .oauth2Login(oauth2Login -> // Налаштування OAuth2 для аутентифікації через Google
@@ -87,15 +100,29 @@ public class SecurityConfig {
                         OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
                         Map<String, Object> claims = oidcUser.getClaims();
                         String email = (String) claims.get("email");
+                        if (!userService.existsByEmail(email)) {
+                            userService.create(new User().setEmail(email).setRole(Role.ROLE_USER));
+                        }
+                        UserDetails userDetails = userService
+                                .userDetailsService()
+                                .loadUserByUsername(email);
+                        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
+                        // Встановлення нового об'єкта аутентифікації в контексті
+                        SecurityContextHolder.getContext().setAuthentication(newAuth);
 
                         // якщо email не відповідає моєму, то відмовити у доступі
-                        if (!"toadkillergamer@gmail.com".equals(email)) {
-                            // дозволити лише GET запити
-                            if (!"GET".equalsIgnoreCase(httpRequest.getMethod())) {
-                                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
-                                return;
-                            }
-                        }
+//                        if (!"toadkillergamer@gmail.com".equals(email)) {
+//                            // дозволити лише GET запити
+//                            if (!"GET".equalsIgnoreCase(httpRequest.getMethod())) {
+//                                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+//                                return;
+//                            }
+//                        }
                     }
                 }
 

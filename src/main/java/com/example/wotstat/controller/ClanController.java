@@ -49,8 +49,7 @@ public class ClanController {
     // метод для отримання списку кланів
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping
-    public List<Clan> getClans(@RequestParam(required = false) String search, Principal principal) {
-        System.out.println(principal.getName());
+    public List<Clan> getClans(@RequestParam(required = false) String search) {
         if (search == null || search.isEmpty()) {
             return clanRepository.findAll();
         } else {
