@@ -18,7 +18,7 @@ public class WotStatApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		mainMenu.start();
+//		mainMenu.start();
 	}
 }
 

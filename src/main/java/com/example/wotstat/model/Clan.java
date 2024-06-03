@@ -1,6 +1,8 @@
 package com.example.wotstat.model;
 
 import jakarta.persistence.*;
+
+
 import java.util.List;
 
 @Entity
